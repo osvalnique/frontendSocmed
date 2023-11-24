@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Home</title>
+  <title>Profile</title>
   <link rel="icon" type="image/x-icon" href="/asset/Twitter_new_X_logo.png" />
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet" />
@@ -14,17 +14,19 @@
 
 <body class="d-flex col-12 px-3 bg-light" style="height: auto; width: 100%">
   <!-- Header -->
-  <div class="row">
-    <div class="col" style="height: 100vh; width: 45vh; position: relative; overflow: auto">
+  <nav class="row">
+    <div class="col position-relative" style="height: 100vh; width: 45vh; overflow: auto">
       <!-- side menu -->
 
       <div class="row">
         <span><i class="bi bi-twitter-x" style="font-size: 30px; font-weight: 700"></i></span>
       </div>
       <div class="row my-2">
-        <span><button type="button" class="btn btn-light rounded-pill">
-            <i class="bi bi-house-door mx-2"></i>Home
-          </button></span>
+        <a href="home.html">
+          <span><button type="button" class="btn btn-light rounded-pill">
+              <i class="bi bi-house-door mx-2"></i>Home
+            </button></span>
+        </a>
       </div>
       <!-- <div class="row my-2">
           <span
@@ -60,8 +62,8 @@
               <i class="bi bi-people mx-2"></i>Community
             </button></span
           >
-        </div> -->
-      <!-- <div class="row my-2">
+        </div>
+        <div class="row my-2">
           <span
             ><button type="button" class="btn btn-light rounded-pill">
               <i class="bi bi-twitter-x mx-2"></i>Premium
@@ -69,11 +71,9 @@
           >
         </div> -->
       <div class="row my-2">
-        <a href="profile.html">
-          <span><button type="button" class="btn btn-light rounded-pill">
-              <i class="bi bi-person mx-2"></i>Profile
-            </button></span>
-        </a>
+        <span><button type="button" class="btn btn-light rounded-pill">
+            <i class="bi bi-person mx-2"></i>Profile
+          </button></span>
       </div>
       <div class="row my-2">
         <span><button type="button" class="btn btn-light rounded-pill">
@@ -95,9 +95,9 @@
           </div>
           <div class="col">
             <div class="">
-              <div class="py-1 flex-grow-1"><b id="avatar-name">Name</b></div>
+              <div class="py-1 flex-grow-1"><b class="">Name</b></div>
               <div class="flex-grow-1">
-                <i id="avatar-username" style="font-size: 16px; font-weight: 100">@username</i>
+                <i class="" style="font-size: 16px; font-weight: 100">@username</i>
               </div>
             </div>
           </div>
@@ -107,146 +107,150 @@
         </div>
       </div>
     </div>
-  </div>
-  <!-- side menu -->
-  </div>
+
+    <!-- side menu -->
+  </nav>
 
   <!-- Content -->
   <!-- Header -->
   <div class="col-7 px-0 pt- mx-3" style="overflow-x: hidden; overflow-y: auto; height: 100vh">
-    <div class="d-flex">
-      <div class="flex-grow-1">
-        <button type="button" class="pt-3 btn btn-light col-12 rounded-0">
-          For You
-        </button>
-      </div>
-      <div class="flex-grow-1">
-        <button type="button" class="pt-3 btn btn-light col-12 rounded-0">
-          Following
-        </button>
-      </div>
-      <div class="pt-2 flex-shrink-1 py-1">
-        <i class="bi bi-gear px-2"></i>
-      </div>
-    </div>
-    <!--post Tweets -->
-    <div class="p-2 pe-3 border">
-      <div class="d-flex">
+    <div class="sticky-top ">
+      <nav class="navbar d-flex py-0 justify-content-start border bg-body-tertiary">
         <div>
-          <img class="avatar" src="asset/default.png"
-            style="object-fit: cover; margin: 20px 20px 30px 10px; width: 50px; height: 50px; border-radius:50%" />
+          <i class="bi bi-arrow-left-short px-2" style="font-size: 30px;"></i>
         </div>
-        <div class="col">
-          <div class="form-group">
-            <textarea class="form-control bg-transparent" id="postTweet" style="resize: none"
-              placeholder="What is Happening ?!" rows="3"></textarea>
-          </div>
-          <div class="d-flex justify-content-between">
-            <!-- icons -->
-            <div class="d-flex py-2" style="gap: 10px">
-              <i class="bi bi-images color text-primary"></i>
-              <i class="bi bi-filetype-gif color text-primary"></i>
-              <i class="bi bi-list-ul color text-primary"></i>
-              <i class="bi bi-emoji-smile color text-primary"></i>
-              <i class="bi bi-calendar-plus color text-primary"></i>
-            </div>
-            <!-- icons -->
+        <div class="navbar-brand mb-0 h1">
+          <span class="avatar-username">Username</span>
+        </div>
+      </nav>
+      <!--my dashboard-->
+      <!-- container dashboard -->
+      <div class="col-12 d-flex bg-light border border-top-0 align-items-center position-sticky p-1 my-0 mx-0">
+        <div class="col p-3">
+          <img class="avatar" src="asset/profile.jpg" style="
+              width: 150px; 
+              height:150px; 
+              object-fit: cover; 
+              border-radius: 50%; 
+              border:solid; 
+              border-width: 7px; 
+              border-color: rgba(190, 190, 190, 0.486);
+              box-shadow: 0px 0px 10px 1px; " />
+        </div>
+        <div class="col-9 px-3" style="height: 180px;">
+          <div class="d-flex py-2 justify-content-evenly">
             <div>
-              <button type="button" id="postButton" class="mx-2 my-2 btn btn-primary rounded-pill">
-                Post
-              </button>
+              <div class="">Tweet</div>
+              <div class="d-flex justify-content-center">500</div>
+            </div>
+            <div>
+              <div>Follower</div>
+              <div class="d-flex justify-content-center">5000</div>
+            </div>
+            <div>
+              <div>Following</div>
+              <div class="d-flex justify-content-center">5</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="d-flex mb-1" style="font-size: 13px; height: 70px;">Lorem ipsum dolor sit, amet consectetur
+              adipisicing elit. Nesciunt in eligendi, dolor odio excepturi error, distinctio officia aperiam nemo porro
+              unde. Ducimus exercitationem placeat soluta molestiae odit eveniet quidem quasi.</div>
+            <div class="d-flex col">
+              <button class="button-control blackbg">Edit Profile</button>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- container dashboard -->
+    <!--my dashboard-->
+
+
 
     <!--Tweets -->
-    <div id="tweet-container">
-      <div class="tweet">
-        <div class="p-2 pe-4 pe-4 border boreder-dark border-top-0">
-          <div class="d-flex">
-            <div>
-              <img id="tweet-ava" src="asset/default.png"
-                style="object-fit: cover; margin: 20px 20px 30px 10px; width: 50px; height: 50px; border-radius:50%" />
+
+    <div class="tweet">
+      <div class="p-2 pe-4 pe-4 border boreder-dark border-top-0">
+        <div class="d-flex">
+          <div>
+            <img src="asset/default.png" style="width: 50px; margin: 20px 20px 30px 10px" />
+          </div>
+          <div class="col">
+            <div class="row">
+              <div class="d-flex justify-content-between">
+                <div class="d-flex" style="gap: 10px">
+                  <span><b>Name</b></span>
+                  <span>Username</span>
+                </div>
+                <div>
+                  <i class="bi bi-three-dots"></i>
+                </div>
+              </div>
             </div>
-            <div class="col">
-              <div class="row">
-                <div class="d-flex justify-content-between">
-                  <div class="d-flex" style="gap: 10px">
-                    <span><b>Name</b></span>
-                    <span>Username</span>
-                    <span>Time</span>
-                  </div>
-                  <div>
-                    <i class="bi bi-three-dots"></i>
-                  </div>
+            <div class="row m-0">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
+              excepturi voluptatem veniam aperiam a ipsum, voluptate dolorem
+              perferendis repellat sint tempora quos cupiditate error molestiae,
+              nobis harum illum nisi exercitationem!
+            </div>
+            <div class="px-3">
+              <!-- icons -->
+              <div class="d-flex py-2 justify-content-between">
+                <div><i class="bi bi-chat me-1"></i><span>10</span></div>
+                <div><i class="bi bi-repeat me-1"></i><span>20</span></div>
+                <div><i class="bi bi-heart me-1"></i><span>30</span></div>
+                <div>
+                  <i class="bi bi-bar-chart-line me-1"></i><span>40</span>
                 </div>
               </div>
-              <div class="row m-0">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-                excepturi voluptatem veniam aperiam a ipsum, voluptate dolorem
-                perferendis repellat sint tempora quos cupiditate error molestiae,
-                nobis harum illum nisi exercitationem!
-              </div>
-              <div class="px-3">
-                <!-- icons -->
-                <div class="d-flex py-2 justify-content-between">
-                  <div><i class="bi bi-chat me-1"></i><span>10</span></div>
-                  <div><i class="bi bi-repeat me-1"></i><span>20</span></div>
-                  <div><i class="bi bi-heart me-1"></i><span>30</span></div>
-                  <div>
-                    <i class="bi bi-bar-chart-line me-1"></i><span>40</span>
-                  </div>
-                </div>
-                <!-- icons -->
-              </div>
+              <!-- icons -->
             </div>
           </div>
         </div>
       </div>
-      <!-- tweet picture -->
-      <div class="tweet">
-        <div class="p-2 pe-4 border border-top-0">
-          <div class="d-flex">
-            <div>
-              <img src="asset/default.png" style="width: 50px; margin: 20px 20px 30px 10px" />
-            </div>
-            <div class="col">
-              <div class="row">
-                <div class="d-flex justify-content-between">
-                  <div class="d-flex" style="gap: 10px">
-                    <span><b>Name</b></span>
-                    <span>Username</span>
-                  </div>
-                  <div>
-                    <i class="bi bi-three-dots"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="row p-0 m-0">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-                excepturi voluptatem veniam aperiam a ipsum, voluptate dolorem
-                perferendis repellat sint tempora quos cupiditate error molestiae,
-                nobis harum illum nisi exercitationem!
-              </div>
-              <div class="row p-0 m-0 rounded border border-dark" style="width: 620px; object-fit: fill;">
-                <img src="/asset/sample1.jpg" />
-              </div>
-              <div class="px-3">
-                <!-- icons -->
-                <div class="d-flex py-2 justify-content-between">
-                  <div><i class="bi bi-chat me-1"></i><span>10</span></div>
-                  <div><i class="bi bi-repeat me-1"></i><span>20</span></div>
-                  <div><i class="bi bi-heart me-1"></i><span>30</span></div>
-                  <div>
-                    <i class="bi bi-bar-chart-line me-1"></i><span>40</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- icons -->
+    </div>
+    <!-- tweet picture -->
+    <div class="tweet">
+      <div class="p-2 pe-4 border border-top-0">
+        <div class="d-flex">
+          <div>
+            <img src="asset/default.png" style="width: 50px; margin: 20px 20px 30px 10px" />
           </div>
+          <div class="col">
+            <div class="row">
+              <div class="d-flex justify-content-between">
+                <div class="d-flex" style="gap: 10px">
+                  <span><b>Name</b></span>
+                  <span>Username</span>
+                </div>
+                <div>
+                  <i class="bi bi-three-dots"></i>
+                </div>
+              </div>
+            </div>
+            <div class="row p-0 m-0">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
+              excepturi voluptatem veniam aperiam a ipsum, voluptate dolorem
+              perferendis repellat sint tempora quos cupiditate error molestiae,
+              nobis harum illum nisi exercitationem!
+            </div>
+            <div class="row my-2 p-0 border border-dark" style="width: 620px; object-fit: cover; border-radius: 20px;">
+              <img src="/asset/sample1.jpg" />
+            </div>
+            <div class="px-3">
+              <!-- icons -->
+              <div class="d-flex py-2 justify-content-between">
+                <div><i class="bi bi-chat me-1"></i><span>10</span></div>
+                <div><i class="bi bi-repeat me-1"></i><span>20</span></div>
+                <div><i class="bi bi-heart me-1"></i><span>30</span></div>
+                <div>
+                  <i class="bi bi-bar-chart-line me-1"></i><span>40</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- icons -->
         </div>
       </div>
     </div>
