@@ -61,22 +61,22 @@
             </button></span
           >
         </div> -->
-      <!-- <div class="row my-2">
-          <span
-            ><button type="button" class="btn btn-light rounded-pill">
-              <i class="bi bi-twitter-x mx-2"></i>Premium
-            </button></span
-          >
-        </div> -->
       <div class="row my-2">
-        <a href="profile.html">
+        <a href="profile.html?" id="my-profile">
           <span><button type="button" class="btn btn-light rounded-pill">
               <i class="bi bi-person mx-2"></i>Profile
             </button></span>
         </a>
       </div>
       <div class="row my-2">
+        <a href="reporting.html">
         <span><button type="button" class="btn btn-light rounded-pill">
+            <i class="bi bi-bar-chart-line mx-2"></i>Reporting
+          </button></span>
+        </a>
+      </div>
+      <div class="row my-2">
+        <span><button type="button" class="btn btn-light rounded-pill" id="btn-logout">
             <i class="bi bi-power mx-2"></i>Log Out
           </button></span>
       </div>
@@ -136,28 +136,27 @@
           <img class="avatar" src="asset/default.png"
             style="object-fit: cover; margin: 20px 20px 30px 10px; width: 50px; height: 50px; border-radius:50%" />
         </div>
-        <div class="col">
+        <form class="col" enctype="multipart/form-data" accept="image">
           <div class="form-group">
-            <textarea class="form-control bg-transparent" id="postTweet" style="resize: none"
+            <textarea class="mb-0 form-control bg-transparent" id="postTweet" style="resize: none"
               placeholder="What is Happening ?!" rows="3"></textarea>
           </div>
-          <div class="d-flex justify-content-between">
+          <div class="justify-content-between">
             <!-- icons -->
-            <div class="d-flex py-2" style="gap: 10px">
-              <i class="bi bi-images color text-primary"></i>
-              <i class="bi bi-filetype-gif color text-primary"></i>
-              <i class="bi bi-list-ul color text-primary"></i>
-              <i class="bi bi-emoji-smile color text-primary"></i>
-              <i class="bi bi-calendar-plus color text-primary"></i>
+            <div class="d-flex col">
+              <div class="my-0 col">
+                <label for="formFileSm" class="form-label"></label>
+                <input class="form-control form-control-sm" id="postImg" type="file">
+              </div>
             </div>
             <!-- icons -->
-            <div>
-              <button type="button" id="postButton" class="mx-2 my-2 btn btn-primary rounded-pill">
+            <div class="">
+              <button type="button" id="postButton" class="col postButton mx-2 my-2 btn btn-primary rounded-pill justify-content-end">
                 Post
               </button>
             </div>
           </div>
-        </div>
+        </form>
       </div>
     </div>
 
@@ -230,8 +229,8 @@
                 perferendis repellat sint tempora quos cupiditate error molestiae,
                 nobis harum illum nisi exercitationem!
               </div>
-              <div class="row p-0 m-0 rounded border border-dark" style="width: 620px; object-fit: fill;">
-                <img src="/asset/sample1.jpg" />
+              <div class="row p-0 m-0" style="width: 620px; padding: 0; object-fit: fill;">
+                <img src="/asset/sample1.jpg" style="padding: 0px; border-radius: 20px;">
               </div>
               <div class="px-3">
                 <!-- icons -->
@@ -257,22 +256,74 @@
   <!-- content -->
   <!-- Header search -->
   <div class="col pt-2 justify-content-end" style="height: 40px; width: auto">
-    <div class="input-group d-flex">
+    <form class="input-group d-flex" id="form-search">
       <div class="input-group-prepend" style="position: absolute; align-items: center">
-        <div class="input-group-text" style="
+        <button type="submit" class="input-group-text" style="
               height: 40px;
               border-radius: 30px 0px 0px 30px;
               padding-bottom: 15px;
             ">
           <i class="bi bi-search"></i>
-        </div>
+        </button>
       </div>
-      <input type="text" class="form-control" style="
+      <input type="text" class="form-control" name="keyword" style="
             border-radius: 0 30px 30px 0;
             padding-left: 10px;
             margin-left: 40px;
             height: 40px;
           " placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
+    </form>
+    <div>
+      <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+          <button class="nav-link active col" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-user" type="button" role="tab" aria-controls="nav-user" aria-selected="true">User</button>
+          <button class="nav-link col" id="nav-tweet-tab" data-bs-toggle="tab" data-bs-target="#nav-tweet" type="button" role="tab" aria-controls="nav-tweet" aria-selected="false">Tweet</button>
+        </div>
+      </nav>
+      <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-user" role="tabpanel" aria-labelledby="nav-user-tab">
+          <!-- content user-->
+          
+          <!-- content user-->
+        </div>
+        <div class="tab-pane fade" id="nav-tweet" role="tabpanel" aria-labelledby="nav-tweet-tab">
+          <!-- content tweet -->
+          <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <div class="">
+                      <div class="d-flex">
+                        <div>
+                          <img src="asset/default.png" style="width: 40px; margin-right: 10px" />
+                        </div>
+                        <div class="col">
+                          <div class="row">
+                            <div class="d-flex justify-content-between">
+                              <div class="m-auto row">
+                                <span style="font-size: 14px;"><b>Name</b></span>
+                                <span style="font-size: 14px;">Username</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="m-0 pt-1 pb-0 px-2 accordion-body justify-content-center" style="font-size: 11px;">
+                  Content Here
+                </div>
+                <div class="d-flex justify-content-center">
+                  <img src="asset/sample1.jpg" style="width: 280px; border-radius: 15px; padding:10px">
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- content tweet -->
+        </div>
+      </div>
     </div>
   </div>
   <!-- Header search-->
@@ -294,17 +345,16 @@
               </div>
               <div class="col">
                 <div class="form-group">
-                  <textarea class="form-control bg-transparent" id="exampleFormControlTextarea1" style="resize: none"
+                  <textarea class="form-control bg-transparent" id="modalPostTweet" style="resize: none"
                     placeholder="What is Happening ?!" rows="3"></textarea>
                 </div>
                 <div class="d-flex justify-content-between">
                   <!-- icons -->
-                  <div class="d-flex py-2" style="gap: 10px">
-                    <i class="bi bi-images color text-primary"></i>
-                    <i class="bi bi-filetype-gif color text-primary"></i>
-                    <i class="bi bi-list-ul color text-primary"></i>
-                    <i class="bi bi-emoji-smile color text-primary"></i>
-                    <i class="bi bi-calendar-plus color text-primary"></i>
+                  <div class="col d-flex">
+                    <div class="mb-3 col">
+                      <label for="formFileSm" class="form-label"></label>
+                      <input class="form-control form-control-sm" id="modalPostImg" type="file">
+                    </div>
                   </div>
                   <!-- icons -->
 
@@ -315,7 +365,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary rounded-pill">Post</button>
+          <button type="button" class="postButton btn btn-primary rounded-pill">Post</button>
         </div>
       </div>
     </div>

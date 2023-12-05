@@ -66,11 +66,20 @@ async function login() {
   const [res, result] = await userLogin(data);
   console.log(data);
   localStorage.setItem("accessToken", result.access_token);
+  localStorage.setItem("refreshToken", result.refresh_token);
   if (res.status != 200) {
     alert(result.msg);
   } else {
     window.location.href = "./home.html";
   }
+}
+
+const logout = document.getElementById("btn-logout");
+if (logout) {
+  logout.addEventListener("click", () => {
+    localStorage.clear();
+    window.location.replace("./landing.html");
+  });
 }
 
 async function userLogin(data) {
@@ -91,8 +100,12 @@ if (loginButton) {
 }
 
 const accessToken = localStorage.getItem("accessToken");
+const refreshToken = localStorage.getItem("refreshToken");
 
 let data = parseJwt(accessToken);
+const myProfile = document.getElementById("my-profile");
+myProfile.href = "profile.html?userid=" + data.user_id;
+
 const avatar = document.getElementsByClassName("avatar");
 const avatarName = document.getElementById("avatar-name");
 const avatarUsername = document.getElementById("avatar-username");
@@ -101,8 +114,10 @@ const avatar_img = document.querySelectorAll("img.avatar");
 
 if (avatarName) {
   avatarName.innerHTML = data.name;
-  avatarUsername.innerHTML = data.sub;
+  avatarUsername.innerHTML = data.username;
   avatar.src = data.img_url;
+  console.log("data", data);
+
   if (data.img_url != "") {
     avatar_img.forEach((avatar) => {
       avatar.src = "http://127.0.0.1:5000/user/get_avatar/" + data.img_url;
@@ -111,34 +126,79 @@ if (avatarName) {
   avatar.alt = data.name;
 }
 
-async function newTweet(tweet) {
+async function newTweet(tweet, attachment) {
   const formData = new FormData();
   formData.append("tweet", tweet);
+  formData.append("attachment", attachment);
 
-  let res = await fetch("http://127.0.0.1:5000/tweet/post", {
+  let res = await fetch("http://127.0.0.1:5000/tweet/post_pict", {
     method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
     body: formData,
   });
-  // console.log("res");
+  let data = await res.json();
+  console.log(res);
   if (res.ok) {
-    let data = await res.json();
-    console.log(data);
+    alert(data.msg);
+    window.location.reload();
   } else {
-    console.log(res.msg);
+    return alert(data.msg);
   }
 }
 
-const postButton = document.getElementById("postButton");
+const postButton = document.getElementsByClassName("postButton");
 const postTweet = document.getElementById("postTweet");
+const postImg = document.getElementById("postImg");
+const modalPostImg = document.getElementById("modalPostImg");
+const modalPostTweet = document.getElementById("modalPostTweet");
 
-if (postButton) {
-  postButton.addEventListener("click", async function (e) {
-    e.preventDefault();
-    e.stopPropagation();
-    let tweet = postTweet.value;
-    await newTweet(tweet);
+if (postButton.length > 0) {
+  Array.from(postButton).forEach((btn) => {
+    btn.addEventListener("click", async function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      let tweet = modalPostTweet.value;
+      let attachment = modalPostImg.files[0];
+      // console.log(tweet);
+      if (btn.id) {
+        tweet = postTweet.value;
+        attachment = postImg.files[0];
+      }
+      // console.log(attachment);
+      await newTweet(tweet, attachment);
+    });
   });
+}
+
+async function likeTweet(id) {
+  let response = await fetch("http://127.0.0.1:5000/tweet/like/" + id, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  let res = response.json();
+  if (response.ok) {
+    return res;
+  } else {
+    alert(res.msg);
+  }
+}
+async function unlikeTweet(id) {
+  let response = await fetch("http://127.0.0.1:5000/tweet/unlike/" + id, {
+    method: "PUT",
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  let res = response.json();
+  if (response.ok) {
+    return res;
+  } else {
+    alert(res.msg);
+  }
 }
 
 async function followingTweet() {
@@ -160,15 +220,17 @@ followingTweet()
     container.innerHTML = "";
     tweets.forEach((t) => {
       let tweetAva = "http://127.0.0.1:5000/user/get_avatar/" + t.profile;
+      let attachment = "http://127.0.0.1:5000/user/get_picture/" + t.attachment;
       let now = new Date();
       let time = now - new Date(t.created_at);
       let date = Math.floor(new Date(time) / 1000 / 60 / 60 / 24) + " days ago";
+
       container.innerHTML += `<div class="tweet">
             <div class="p-2 pe-4 pe-4 border boreder-dark border-top-0">
               <div class="d-flex">
                 <div>
                   <img
-                    src="${tweetAva} "
+                    src="${t.profile ? tweetAva : "asset/default.png"}"
                     style="object-fit: cover; margin: 20px 20px 30px 10px; width: 50px; height: 50px; border-radius:50%"
                   />
                 </div>
@@ -176,8 +238,16 @@ followingTweet()
                   <div class="row">
                     <div class="d-flex justify-content-between">
                       <div class="d-flex" style="gap: 10px">
-                        <span><b>${t.name}</b></span>
-                        <span>${t.username}</span>
+                        <a href="profile.html?userid=${
+                          t.user_id
+                        }" style="text-decoration: none; color: black"><span><b>${
+        t.name
+      }</b></span></a>
+                        <a href="profile.html?userid=${
+                          t.user_id
+                        }" style="text-decoration: none; color: black"><span>${
+        t.username
+      }</span></a>
                         <span>${date}</span>
                       </div>
                       <div>
@@ -188,19 +258,20 @@ followingTweet()
                   <div class="row m-0">
                     ${t.tweet}
                   </div>
-                  ${
-                    t.attachment
-                      ? '<div class="row p-0 m-0 rounded border border-dark" style="width: 620px; object-fit: fill;"> <img src="/asset/sample1.jpg" /></div>'
-                      : ""
-                  }
+                  <div class="row p-0 m-0" style="width: 620px; object-fit: fill;">
+                  <img 
+                  src="${t.attachment ? attachment : ""}"
+                  style="padding: 0px; border-radius: 20px">
+                  </div>
                   <div class="px-3">
                     <!-- icons -->
                     <div class="d-flex py-2 justify-content-between">
-                      <div><i class="bi bi-chat me-1"></i><span>10</span></div>
-                      <div><i class="bi bi-repeat me-1"></i><span>20</span></div>
-                      <div><i class="bi bi-heart me-1"></i><span>30</span></div>
+                      <div><i data-username="${t.username}" data-tweetid="${
+        t.tweet_id
+      }" class="bi bi-heart${
+        t.liked_list.find((l) => l == data.username) ? "-fill" : ""
+      } me-1 like"></i><span>${t.liked_count}</span></div>
                       <div>
-                        <i class="bi bi-bar-chart-line me-1"></i><span>40</span>
                       </div>
                     </div>
                     <!-- icons -->
@@ -210,7 +281,92 @@ followingTweet()
             </div>
             </div>`;
     });
+    let icon = document.querySelectorAll("i.like");
+
+    Array.from(icon).forEach((l) => {
+      l.addEventListener("click", async function (e) {
+        if (this.classList.contains("bi-heart-fill")) {
+          if (await unlikeTweet(l.dataset.tweetid)) {
+            this.classList.replace("bi-heart-fill", "bi-heart");
+            this.parentElement.querySelector("span").innerHTML =
+              parseInt(this.parentElement.querySelector("span").innerHTML) - 1;
+            // console.log(this.parentElement.querySelector("span").innerHTML)
+          }
+        } else {
+          if (await likeTweet(l.dataset.tweetid)) {
+            this.classList.replace("bi-heart", "bi-heart-fill");
+            this.parentElement.querySelector("span").innerHTML =
+              parseInt(this.parentElement.querySelector("span").innerHTML) + 1;
+          }
+        }
+      });
+    });
   })
   .catch((error) => {
     console.error(error);
   });
+
+async function search(keyword) {
+  let res = await fetch("http://127.0.0.1:5000/search/" + keyword, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  response = await res.json();
+  return response;
+}
+
+async function searching(keyword) {
+  let searchResult = await search(keyword);
+  let navUser = document.querySelector("#nav-user");
+
+  navUser.innerHTML = "";
+  searchResult.user.forEach((u) => {
+    let tweetAva = "http://127.0.0.1:5000/user/get_avatar/" + u.img_url;
+    navUser.innerHTML += `<div class="">
+    <div class="col d-flex p-2 pe-4 pe-4 border border-top-0">
+        <div class="my-auto">
+          <img src="${
+            u.img_url ? tweetAva : "asset/default.png"
+          }" style="width: 40px; height:40px; border-radius:50% ; margin-right: 10px; object-fit: cover"/>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="d-flex justify-content-between">
+              <div class="row">
+              <a href="profile.html?userid=${
+                u.user_id
+              }" style="text-decoration: none; color: black"><span><b>${
+      u.name
+    }</b></span><a>
+              <a href="profile.html?userid=${
+                u.user_id
+              }" style="text-decoration: none; color: black"><span>${
+      u.username
+    }</span><a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>`;
+  });
+  console.log("searchResult", searchResult);
+}
+
+let formSearch = document.getElementById("form-search");
+formSearch.addEventListener("submit", function (e) {
+  e.preventDefault();
+  let keyword = new FormData(this).get("keyword");
+  searching(keyword);
+});
+formSearch.querySelector("input").addEventListener("keyup", function (e) {
+  e.preventDefault();
+  // if (e.key === "Enter" || e.keyCode === 13) {
+  //   let keyword = this.value;
+  //   searching(keyword);
+  // }
+  if (this.value != "") {
+    searching(this.value);
+  }
+});
