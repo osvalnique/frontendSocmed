@@ -69,7 +69,7 @@
         </a>
       </div>
       <div class="row my-2">
-        <a href="reporting.html">
+        <a href="reporting.html" id="btn-reporting"> 
         <span><button type="button" class="btn btn-light rounded-pill">
             <i class="bi bi-bar-chart-line mx-2"></i>Reporting
           </button></span>
@@ -101,9 +101,9 @@
               </div>
             </div>
           </div>
-          <div class="d-flex justify-content-end">
+          <!-- <div class="d-flex justify-content-end">
             <i class="bi bi-three-dots"></i>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>
@@ -112,150 +112,167 @@
   </div>
 
   <!-- Content -->
-  <!-- Header -->
-  <div class="col-7 px-0 pt- mx-3" style="overflow-x: hidden; overflow-y: auto; height: 100vh">
-    <div class="d-flex">
-      <div class="flex-grow-1">
-        <button type="button" class="pt-3 btn btn-light col-12 rounded-0">
-          For You
-        </button>
-      </div>
-      <div class="flex-grow-1">
-        <button type="button" class="pt-3 btn btn-light col-12 rounded-0">
-          Following
-        </button>
-      </div>
-      <div class="pt-2 flex-shrink-1 py-1">
-        <i class="bi bi-gear px-2"></i>
-      </div>
+  
+<div class="col-7 px-0 mx-3" style="overflow-x: hidden; overflow-y: auto; height: 100vh">
+  <nav class="col">
+    <div class="nav nav-tabs col" id="nav-header" role="tablist">
+      <button class="nav-link active col" id="nav-popular-tab" data-bs-toggle="tab" data-bs-target="#nav-popular" type="button" role="tab" aria-controls="nav-popular" aria-selected="true">Popular</button>
+      <button class="nav-link col" id="nav-following-tab" data-bs-toggle="tab" data-bs-target="#nav-following" type="button" role="tab" aria-controls="nav-following" aria-selected="false">Following</button>
     </div>
-    <!--post Tweets -->
-    <div class="p-2 pe-3 border">
-      <div class="d-flex">
-        <div>
-          <img class="avatar" src="asset/default.png"
-            style="object-fit: cover; margin: 20px 20px 30px 10px; width: 50px; height: 50px; border-radius:50%" />
-        </div>
-        <form class="col" enctype="multipart/form-data" accept="image">
-          <div class="form-group">
-            <textarea class="mb-0 form-control bg-transparent" id="postTweet" style="resize: none"
-              placeholder="What is Happening ?!" rows="3"></textarea>
-          </div>
-          <div class="justify-content-between">
-            <!-- icons -->
-            <div class="d-flex col">
-              <div class="my-0 col">
-                <label for="formFileSm" class="form-label"></label>
-                <input class="form-control form-control-sm" id="postImg" type="file">
+  </nav>
+
+  <div class="tab-content" id="nav-headerContent">
+    <!-- popular content -->
+    <div class="tab-pane fade show active" id="nav-popular" role="tabpanel" aria-labelledby="nav-popular-tab" tabindex="0">
+      <div class="col  border">
+        <ul class="col nav nav-underline mb-3" id="pills-tab" role="tablist">
+          <li class="d-flex justify-content-center col nav-item" role="presentation">
+            <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Tweet</button>
+          </li>
+          <li class="d-flex justify-content-center col nav-item" role="presentation">
+            <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">User</button>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-content" id="pills-tabContent">
+        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+    
+    <!-- popular tweet -->
+          <div id="popular-tweet-container">
+            <div class="tweet">
+              <div class="p-2 pe-4 pe-4 border boreder-dark border-top-0">
+                <div class="d-flex">
+                  <div>
+                    <img src="asset/default.png" style="width: 50px; margin: 20px 20px 30px 10px" />
+                  </div>
+                  <div class="col">
+                    <div class="row">
+                      <div class="d-flex justify-content-between">
+                        <div class="d-flex" style="gap: 10px">
+                          <span><b>Name</b></span>
+                          <span>Username</span>
+                        </div>
+                        <!-- <div>
+                          <i class="bi bi-three-dots"></i>
+                        </div> -->
+                      </div>
+                    </div>
+                    <div class="row m-0">
+                    
+                    </div>
+                    <div class="px-3">
+                      <!-- icons -->
+                      <div class="d-flex py-2 justify-content-between">
+                        <!-- <div><i class="bi bi-chat me-1"></i><span>10</span></div> -->
+                        <!-- <div><i class="bi bi-repeat me-1"></i><span>20</span></div> -->
+                        <div><i class="bi bi-heart me-1"></i><span>30</span></div>
+                        <div>
+                          <!-- <i class="bi bi-bar-chart-line me-1"></i><span>40</span> -->
+                        </div>
+                      </div>
+                      <!-- icons -->
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <!-- icons -->
-            <div class="">
-              <button type="button" id="postButton" class="col postButton mx-2 my-2 btn btn-primary rounded-pill justify-content-end">
-                Post
-              </button>
+          </div>
+        </div>
+        <!-- popular tweet end -->
+
+        <!-- popular user -->
+        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+          
+          <div id="popular-user-container">
+            <div class="p-2 pe-4 pe-4 border border-top-0">
+              <div class="d-flex">
+                <div>
+                  <img
+                    src="asset/default.png"
+                    style="width: 50px; margin: 20px 20px 30px 10px"
+                  />
+                </div>
+                <div class="col">
+                  <div class="row">
+                    <div class="d-flex justify-content-between">
+                      <div class="d-flex" style="gap: 10px">
+                        <span><b>Name</b></span>
+                        <span>Username</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-between">
+                    <div>Followed by 10</div>
+                    <div>
+                      <button
+                        class="button-control blackbg"
+                        style="
+                          width: 120px;
+                          font-size: 13px;
+                          margin-left: 30px;
+                        "
+                      >
+                        Follow
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
-        </form>
+        </div>
+        <!-- popular user end -->
       </div>
     </div>
+    <!-- popular content end -->
 
-    <!--Tweets -->
-    <div id="tweet-container">
-      <div class="tweet">
-        <div class="p-2 pe-4 pe-4 border boreder-dark border-top-0">
+    <!-- following content -->
+    <div class="tab-pane fade" id="nav-following" role="tabpanel" aria-labelledby="nav-following-tab" tabindex="0">
+        <!--post Tweets -->
+        <div class="p-2 pe-3 border">
           <div class="d-flex">
             <div>
-              <img id="tweet-ava" src="asset/default.png"
+              <img class="avatar" src="asset/default.png"
                 style="object-fit: cover; margin: 20px 20px 30px 10px; width: 50px; height: 50px; border-radius:50%" />
             </div>
-            <div class="col">
-              <div class="row">
-                <div class="d-flex justify-content-between">
-                  <div class="d-flex" style="gap: 10px">
-                    <span><b>Name</b></span>
-                    <span>Username</span>
-                    <span>Time</span>
-                  </div>
-                  <div>
-                    <i class="bi bi-three-dots"></i>
-                  </div>
-                </div>
+            <form class="col" enctype="multipart/form-data" accept="image">
+              <div class="form-group">
+                <textarea class="mb-0 form-control bg-transparent" id="postTweet" style="resize: none"
+                  placeholder="What is Happening ?!" rows="3"></textarea>
               </div>
-              <div class="row m-0">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-                excepturi voluptatem veniam aperiam a ipsum, voluptate dolorem
-                perferendis repellat sint tempora quos cupiditate error molestiae,
-                nobis harum illum nisi exercitationem!
-              </div>
-              <div class="px-3">
+              <div class="justify-content-between">
                 <!-- icons -->
-                <div class="d-flex py-2 justify-content-between">
-                  <div><i class="bi bi-chat me-1"></i><span>10</span></div>
-                  <div><i class="bi bi-repeat me-1"></i><span>20</span></div>
-                  <div><i class="bi bi-heart me-1"></i><span>30</span></div>
-                  <div>
-                    <i class="bi bi-bar-chart-line me-1"></i><span>40</span>
+                <div class="d-flex col">
+                  <div class="my-0 col">
+                    <label for="formFileSm" class="form-label"></label>
+                    <input class="form-control form-control-sm" id="postImg" type="file">
                   </div>
                 </div>
                 <!-- icons -->
+                <div class="">
+                  <button type="button" id="postButton" class="col postButton mx-2 my-2 btn btn-primary rounded-pill justify-content-end">
+                    Post
+                  </button>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         </div>
-      </div>
-      <!-- tweet picture -->
-      <div class="tweet">
-        <div class="p-2 pe-4 border border-top-0">
-          <div class="d-flex">
-            <div>
-              <img src="asset/default.png" style="width: 50px; margin: 20px 20px 30px 10px" />
-            </div>
-            <div class="col">
-              <div class="row">
-                <div class="d-flex justify-content-between">
-                  <div class="d-flex" style="gap: 10px">
-                    <span><b>Name</b></span>
-                    <span>Username</span>
-                  </div>
-                  <div>
-                    <i class="bi bi-three-dots"></i>
-                  </div>
-                </div>
-              </div>
-              <div class="row p-0 m-0">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Enim
-                excepturi voluptatem veniam aperiam a ipsum, voluptate dolorem
-                perferendis repellat sint tempora quos cupiditate error molestiae,
-                nobis harum illum nisi exercitationem!
-              </div>
-              <div class="row p-0 m-0" style="width: 620px; padding: 0; object-fit: fill;">
-                <img src="/asset/sample1.jpg" style="padding: 0px; border-radius: 20px;">
-              </div>
-              <div class="px-3">
-                <!-- icons -->
-                <div class="d-flex py-2 justify-content-between">
-                  <div><i class="bi bi-chat me-1"></i><span>10</span></div>
-                  <div><i class="bi bi-repeat me-1"></i><span>20</span></div>
-                  <div><i class="bi bi-heart me-1"></i><span>30</span></div>
-                  <div>
-                    <i class="bi bi-bar-chart-line me-1"></i><span>40</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- icons -->
-          </div>
+    
+        <!--Tweets -->
+        <div id="tweet-container">
         </div>
       </div>
+    <!-- following content end-->
     </div>
   </div>
+
+  
   </div>
 
-  <!-- Tweet picture -->
   <!-- content -->
   <!-- Header search -->
-  <div class="col pt-2 justify-content-end" style="height: 40px; width: auto">
+  <div class="col pt-2 justify-content-end" style="height: 40px; width: auto; overflow-x: hidden; overflow-y: auto; height: 100vh">
     <form class="input-group d-flex" id="form-search">
       <div class="input-group-prepend" style="position: absolute; align-items: center">
         <button type="submit" class="input-group-text" style="
@@ -274,8 +291,8 @@
           " placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
     </form>
     <div>
-      <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+      <nav id="nav-tab" style="padding-top: 5px; display: block">
+        <div class="nav nav-tabs" role="tablist">
           <button class="nav-link active col" id="nav-user-tab" data-bs-toggle="tab" data-bs-target="#nav-user" type="button" role="tab" aria-controls="nav-user" aria-selected="true">User</button>
           <button class="nav-link col" id="nav-tweet-tab" data-bs-toggle="tab" data-bs-target="#nav-tweet" type="button" role="tab" aria-controls="nav-tweet" aria-selected="false">Tweet</button>
         </div>
@@ -288,39 +305,7 @@
         </div>
         <div class="tab-pane fade" id="nav-tweet" role="tabpanel" aria-labelledby="nav-tweet-tab">
           <!-- content tweet -->
-          <div class="accordion" id="accordionExample">
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="headingOne">
-                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                  <div class="">
-                      <div class="d-flex">
-                        <div>
-                          <img src="asset/default.png" style="width: 40px; margin-right: 10px" />
-                        </div>
-                        <div class="col">
-                          <div class="row">
-                            <div class="d-flex justify-content-between">
-                              <div class="m-auto row">
-                                <span style="font-size: 14px;"><b>Name</b></span>
-                                <span style="font-size: 14px;">Username</span>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                  </div>
-                </button>
-              </h2>
-              <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                <div class="m-0 pt-1 pb-0 px-2 accordion-body justify-content-center" style="font-size: 11px;">
-                  Content Here
-                </div>
-                <div class="d-flex justify-content-center">
-                  <img src="asset/sample1.jpg" style="width: 280px; border-radius: 15px; padding:10px">
-                </div>
-              </div>
-            </div>
-          </div>
+
           <!-- content tweet -->
         </div>
       </div>
@@ -341,7 +326,7 @@
           <div class="p-2 pe-3 border">
             <div class="d-flex">
               <div>
-                <img src="asset/default.png" style="width: 50px; margin: 20px 20px 30px 10px" />
+                <img class="avatar" src="asset/default.png" style="object-fit: cover; margin: 20px 20px 30px 10px; width: 50px; height: 50px; border-radius:50%" />
               </div>
               <div class="col">
                 <div class="form-group">

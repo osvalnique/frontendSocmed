@@ -1,6 +1,3 @@
-var validRegex =
-  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
-
 function parseJwt(token) {
   var base64Url = token.split(".")[1];
   var base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -28,8 +25,14 @@ if (localStorage.getItem("accessToken")) {
 }
 const accessToken = localStorage.getItem("accessToken");
 const refreshToken = localStorage.getItem("refreshToken");
-let data = parseJwt(accessToken);
+const userRole = localStorage.getItem("userRole");
+if (userRole == "developer") {
+  document.getElementById("btn-reporting").style.display = "block";
+} else {
+  document.getElementById("btn-reporting").style.display = "none";
+}
 
+let data = parseJwt(accessToken);
 let q = window.location.search;
 let query = new URLSearchParams(q);
 let username = query.get("username");
@@ -48,6 +51,19 @@ Array.from(avatarUsername).forEach((e) => {
   e.innerHTML = data.username;
   console.log("avatar", data.username);
 });
+
+const back = document.getElementById("back");
+back.addEventListener("click", () => {
+  window.history.back();
+});
+
+const logout = document.getElementById("btn-logout");
+if (logout) {
+  logout.addEventListener("click", () => {
+    localStorage.clear();
+    window.location.replace("./landing.html");
+  });
+}
 
 async function getTweet() {
   let tweet = await fetch("http://127.0.0.1:5000/tweet/user_id/" + userId, {
@@ -128,9 +144,6 @@ async function tweetList() {
               <span><b>${t.name}</b></span>
               <span>${t.username}</span>
             </div>
-            <div>
-              <i class="bi bi-three-dots"></i>
-            </div>
           </div>
         </div>
         <div class="row m-0">
@@ -184,7 +197,6 @@ tweetList();
 
 async function setProfileImg() {
   let user = await getUser(userId);
-  console.log("user", user);
   if (user.result.profile_picture) {
     avatar_img[1].src =
       "http://127.0.0.1:5000/user/get_avatar/" + user.result.profile_picture;
@@ -202,7 +214,6 @@ async function dataProfile() {
     },
   });
   let result = await dataProfile.json();
-  console.log("result", result);
   return result;
 }
 dataProfile();
@@ -238,9 +249,47 @@ async function followingList(id) {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  following = await res.json();
+  let following = await res.json();
   return following;
 }
+
+async function showFollowing(id) {
+  let result = await followingList(id);
+  let followingListContainer = document.querySelector("#following-list");
+  followingListContainer.innerHTML = "";
+  result.result.following.forEach((f) => {
+    let tweetAva = "http://127.0.0.1:5000/user/get_avatar/" + f.img_url;
+    followingListContainer.innerHTML += `<div class="col d-flex py-1 px-4 border">
+    <div class="my-auto">
+      <img src="${
+        f.img_url ? tweetAva : "asset/default.png"
+      }" style="width: 40px; height:40px; border-radius:50% ; margin-right: 10px; object-fit: cover"/>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="d-flex">
+          <div class="row">
+          <a href="profile.html?userid=${
+            f.user_id
+          }" style="text-decoration: none; color: black">
+          <span><b>${f.name}</b></span><a>
+          <a href="profile.html?userid=${
+            f.user_id
+          }" style="text-decoration: none; color: black">
+          <span>${f.username}</span><a>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>`;
+  });
+}
+
+let buttonFollowingList = document.getElementById("btn-followinglist");
+buttonFollowingList.addEventListener("click", async function (e) {
+  e.preventDefault();
+  let followingList = await showFollowing(userId);
+});
 
 async function followedList(id) {
   let res = await fetch("http://127.0.0.1:5000/user/followed_list/" + id, {
@@ -248,10 +297,48 @@ async function followedList(id) {
       Authorization: `Bearer ${accessToken}`,
     },
   });
-  followed = await res.json();
+  let followed = await res.json();
   return followed;
 }
-// followedList();
+
+async function showFollower(id) {
+  let result = await followedList(id);
+  let followerListContainer = document.querySelector("#follower-list");
+  followerListContainer.innerHTML = "";
+  result.result.follower.forEach((f) => {
+    let tweetAva = "http://127.0.0.1:5000/user/get_avatar/" + f.img_url;
+    followerListContainer.innerHTML += `<div class="col d-flex py-1 px-4 border">
+    <div class="my-auto">
+      <img src="${
+        f.img_url ? tweetAva : "asset/default.png"
+      }" style="width: 40px; height:40px; border-radius:50% ; margin-right: 10px; object-fit: cover"/>
+    </div>
+    <div class="col">
+      <div class="row">
+        <div class="d-flex">
+          <div class="row">
+          <a href="profile.html?userid=${
+            f.user_id
+          }" style="text-decoration: none; color: black">
+          <span><b>${f.name}</b></span><a>
+          <a href="profile.html?userid=${
+            f.user_id
+          }" style="text-decoration: none; color: black">
+          <span>${f.username}</span><a>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>`;
+  });
+}
+
+let buttonFollowerList = document.getElementById("btn-followerlist");
+buttonFollowerList.addEventListener("click", async function (e) {
+  e.preventDefault();
+  console.log("click");
+  let followerList = await showFollower(userId);
+});
 
 async function followUser(id) {
   let res = await fetch("http://127.0.0.1:5000/user/follow/" + id, {
@@ -285,15 +372,27 @@ async function follow() {
   const editButton = document.getElementById("edit-profile");
   const followButton = document.getElementById("btn-follow");
   const unfollowButton = document.getElementById("btn-unfollow");
+  console.log("userId", userId);
+  console.log("dataSub", data.sub);
 
   if (userId != data.sub) {
     let user = await getUser(userId);
     let followings = await followingList(data.sub);
+    console.log("followings", followings);
     editButton.style.display = "none";
+    // let find = followings.result.following.includes(user.result.user_id);
     let find = followings.result.following.find(
-      (f) => f == user.result.username
+      (u) => u.user_id == user.result.user_id
     );
+    console.log("find", find);
+    // console.log("find", find);
+    // console.log("list", followings.result.following);
+    // console.log(userId);
+    // console.log("data", data.sub);
+    // console.log("list2", user.result.user_id);
+
     if (find) {
+      console.log("followdd");
       unfollowButton.style.display = "block";
       unfollowButton.addEventListener("click", async () => {
         try {
@@ -368,9 +467,12 @@ async function updateUser(data) {
     },
     body: JSON.stringify(data),
   });
-  console.log(res.status);
   updated = await res.json();
-  return updated;
+  if (!res.ok) {
+    alert(updated.msg);
+  } else {
+    return updated;
+  }
 }
 
 async function updateImage(data) {
@@ -393,16 +495,18 @@ async function refresh() {
     },
   });
   response = await res.json();
-  console.log("response", response);
   return response;
 }
 
 const editForm = document.getElementById("edit-form");
+console.log("editForm", editForm);
+
 editForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   let formData = new FormData(editForm);
   let dataObject = Object.fromEntries(formData.entries());
   let update = await updateUser(dataObject);
+  console.log("update", dataObject);
   const editImage = document.getElementById("edit-image");
   if (editImage.files[0]) {
     const imgForm = new FormData();
@@ -411,15 +515,31 @@ editForm.addEventListener("submit", async (e) => {
   }
   let result = await refresh();
   localStorage.setItem("accessToken", result.access_token);
-  window.location.reload();
+  if (update) {
+    alert(updated.msg);
+    window.location.reload();
+  }
 });
+
 const editImage = document.getElementById("edit-image");
+let current_img = "http://127.0.0.1:5000/user/get_avatar/" + data.img_url;
+console.log("current_img", current_img);
+
+if (data.img_url) {
+  document.getElementById("current-img").src = current_img;
+} else {
+  document.getElementById("current-img").src = "asset/default.png";
+}
+
 editImage.onchange = () => {
   const selectedImage = editImage.files[0];
   if (selectedImage) {
-    document.getElementById("current-img").style.display = "none";
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      document.getElementById("current-img").src = e.target.result;
+    };
+    reader.readAsDataURL(selectedImage);
   } else {
     document.getElementById("current-img").style.display = "block";
   }
-  console.log("selectedImage", selectedImage);
 };
