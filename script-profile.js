@@ -39,9 +39,14 @@ let username = query.get("username");
 let userId = query.get("userid");
 
 const avatar_img = document.querySelectorAll("img.avatar-img");
+const avatar = document.getElementById("avatar");
 const avatarName = document.querySelectorAll(".avatar-name");
 const avatarUsername = document.querySelectorAll(".avatar-username");
 const parsed = parseJwt(accessToken);
+
+if (avatar) {
+  avatar.src = "http://127.0.0.1:5000/user/get_avatar/" + data.img_url;
+}
 
 Array.from(avatarName).forEach((e) => {
   e.innerHTML = data.name;
@@ -380,19 +385,11 @@ async function follow() {
     let followings = await followingList(data.sub);
     console.log("followings", followings);
     editButton.style.display = "none";
-    // let find = followings.result.following.includes(user.result.user_id);
     let find = followings.result.following.find(
       (u) => u.user_id == user.result.user_id
     );
-    console.log("find", find);
-    // console.log("find", find);
-    // console.log("list", followings.result.following);
-    // console.log(userId);
-    // console.log("data", data.sub);
-    // console.log("list2", user.result.user_id);
 
     if (find) {
-      console.log("followdd");
       unfollowButton.style.display = "block";
       unfollowButton.addEventListener("click", async () => {
         try {
@@ -543,3 +540,126 @@ editImage.onchange = () => {
     document.getElementById("current-img").style.display = "block";
   }
 };
+
+async function search(keyword) {
+  let res = await fetch("http://127.0.0.1:5000/search/" + keyword, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+    },
+  });
+  response = await res.json();
+  return response;
+}
+
+async function searching(keyword) {
+  let navUser = document.querySelector("#nav-user");
+  let navTweet = document.querySelector("#nav-tweet");
+  if (keyword == "") {
+    navUser.innerHTML = "";
+    navTweet.innerHTML = "";
+    return true;
+  }
+
+  let searchResult = await search(keyword);
+  navUser.innerHTML = "";
+  searchResult.user.forEach((u) => {
+    let tweetAva = "http://127.0.0.1:5000/user/get_avatar/" + u.img_url;
+    navUser.innerHTML += `<div class="">
+    <div class="col d-flex p-2 pe-4 pe-4 border border-top-0">
+        <div class="my-auto">
+          <img src="${
+            u.img_url ? tweetAva : "asset/default.png"
+          }" style="width: 40px; height:40px; border-radius:50% ; margin-right: 10px; object-fit: cover"/>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="d-flex justify-content-between">
+              <div class="row">
+              <a href="profile.html?userid=${
+                u.user_id
+              }" style="text-decoration: none; color: black"><span><b>${
+      u.name
+    }</b></span><a>
+              <a href="profile.html?userid=${
+                u.user_id
+              }" style="text-decoration: none; color: black"><span>${
+      u.username
+    }</span><a>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>`;
+  });
+
+  navTweet.innerHTML = "";
+  searchResult.tweet.forEach((t) => {
+    let tweetAva = "http://127.0.0.1:5000/user/get_avatar/" + t.img_url;
+    let attachment = "http://127.0.0.1:5000/user/get_picture/" + t.attachment;
+    navTweet.innerHTML += `
+    <div class="accordion" id="accordionExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                  <div class="">
+                      <div class="d-flex">
+                        <div>
+                        <img src="${
+                          t.img_url ? tweetAva : "asset/default.png"
+                        }" style="width: 40px; height:40px; border-radius:50% ; margin-right: 10px; object-fit: cover"/>
+                        </div>
+                        <div class="col">
+                          <div class="row">
+                            <div class="d-flex justify-content-between">
+                              <div class="m-auto row">
+                                <span style="font-size: 14px;"><b>${
+                                  t.name
+                                }</b></span>
+                                <span style="font-size: 14px;">${
+                                  t.username
+                                }</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </button>
+              </h2>
+              <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="m-0 pt-1 pb-0 px-2 accordion-body justify-content-center" style="font-size: 11px;">
+                  ${t.tweet}
+                </div>
+                <div class="d-flex justify-content-center">
+                  <img src="${
+                    t.attachment ? attachment : ""
+                  }" style="width: 280px; border-radius: 15px; padding:10px">
+                </div>
+              </div>
+            </div>
+          </div>`;
+  });
+}
+
+let formSearch = document.getElementById("form-search");
+let navTab = document.getElementById("nav-tab");
+// navTab.style.display = "none";
+
+formSearch.addEventListener("submit", function (e) {
+  e.preventDefault();
+  let keyword = new FormData(this).get("keyword");
+  searching(keyword);
+  // navTab.style.display = "block";
+});
+formSearch.querySelector("input").addEventListener("keyup", function (e) {
+  e.preventDefault();
+  setTimeout(() => {
+    if (this.value != "") {
+      searching(this.value);
+    } else {
+      this.value == "";
+      searching(this.value);
+    }
+  }, 2000);
+});

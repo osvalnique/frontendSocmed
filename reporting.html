@@ -144,9 +144,9 @@
                 >
               </div>
             </div>
-            <div class="d-flex justify-content-end">
+            <!-- <div class="d-flex justify-content-end">
               <i class="bi bi-three-dots"></i>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -228,43 +228,7 @@
             aria-labelledby="nav-active-tab"
           >
             <!-- active container -->
-            <div id="active-container">
-              <div class="p-2 pe-4 pe-4 border boreder-dark border-top-0">
-                <div class="d-flex">
-                  <div>
-                    <img
-                      src="asset/default.png"
-                      style="width: 50px; margin: 20px 20px 30px 10px"
-                    />
-                  </div>
-                  <div class="col">
-                    <div class="row">
-                      <div class="d-flex justify-content-between">
-                        <div class="d-flex" style="gap: 10px">
-                          <span><b>Name</b></span>
-                          <span>Username</span>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="d-flex justify-content-between">
-                      <div>Last Login 10 days ago</div>
-                      <div>
-                        <button
-                          class="button-control blackbg"
-                          style="
-                            width: 120px;
-                            font-size: 13px;
-                            margin-left: 30px;
-                          "
-                        >
-                          Ban Account
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <div id="active-container"></div>
             <!-- active container end-->
           </div>
           <!-- inactive-container -->
@@ -330,14 +294,26 @@
 
     <!-- Tweet picture -->
     <!-- content -->
+
     <!-- Header search -->
-    <div class="col pt-2 justify-content-end" style="height: 40px; width: auto">
-      <div class="input-group d-flex">
+    <!-- Header search -->
+    <div
+      class="col pt-2 justify-content-end"
+      style="
+        height: 40px;
+        width: auto;
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 100vh;
+      "
+    >
+      <form class="input-group d-flex" id="form-search">
         <div
           class="input-group-prepend"
           style="position: absolute; align-items: center"
         >
-          <div
+          <button
+            type="submit"
             class="input-group-text"
             style="
               height: 40px;
@@ -346,11 +322,12 @@
             "
           >
             <i class="bi bi-search"></i>
-          </div>
+          </button>
         </div>
         <input
           type="text"
           class="form-control"
+          name="keyword"
           style="
             border-radius: 0 30px 30px 0;
             padding-left: 10px;
@@ -361,8 +338,61 @@
           aria-label="Search"
           aria-describedby="basic-addon1"
         />
+      </form>
+      <div>
+        <nav id="nav-tab" style="padding-top: 5px; display: block">
+          <div class="nav nav-tabs" role="tablist">
+            <button
+              class="nav-link active col"
+              id="nav-user-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-user"
+              type="button"
+              role="tab"
+              aria-controls="nav-user"
+              aria-selected="true"
+            >
+              User
+            </button>
+            <button
+              class="nav-link col"
+              id="nav-tweet-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-tweet"
+              type="button"
+              role="tab"
+              aria-controls="nav-tweet"
+              aria-selected="false"
+            >
+              Tweet
+            </button>
+          </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+          <div
+            class="tab-pane fade show active"
+            id="nav-user"
+            role="tabpanel"
+            aria-labelledby="nav-user-tab"
+          >
+            <!-- content user-->
+
+            <!-- content user-->
+          </div>
+          <div
+            class="tab-pane fade"
+            id="nav-tweet"
+            role="tabpanel"
+            aria-labelledby="nav-tweet-tab"
+          >
+            <!-- content tweet -->
+
+            <!-- content tweet -->
+          </div>
+        </div>
       </div>
     </div>
+    <!-- Header search-->
     <!-- Header search-->
 
     <!-- post modals -->
@@ -390,15 +420,22 @@
               <div class="d-flex">
                 <div>
                   <img
+                    class="avatar"
                     src="asset/default.png"
-                    style="width: 50px; margin: 20px 20px 30px 10px"
+                    style="
+                      object-fit: cover;
+                      margin: 20px 20px 30px 10px;
+                      width: 50px;
+                      height: 50px;
+                      border-radius: 50%;
+                    "
                   />
                 </div>
                 <div class="col">
                   <div class="form-group">
                     <textarea
                       class="form-control bg-transparent"
-                      id="exampleFormControlTextarea1"
+                      id="modalPostTweet"
                       style="resize: none"
                       placeholder="What is Happening ?!"
                       rows="3"
@@ -406,12 +443,15 @@
                   </div>
                   <div class="d-flex justify-content-between">
                     <!-- icons -->
-                    <div class="d-flex py-2" style="gap: 10px">
-                      <i class="bi bi-images color text-primary"></i>
-                      <i class="bi bi-filetype-gif color text-primary"></i>
-                      <i class="bi bi-list-ul color text-primary"></i>
-                      <i class="bi bi-emoji-smile color text-primary"></i>
-                      <i class="bi bi-calendar-plus color text-primary"></i>
+                    <div class="col d-flex">
+                      <div class="mb-3 col">
+                        <label for="formFileSm" class="form-label"></label>
+                        <input
+                          class="form-control form-control-sm"
+                          id="modalPostImg"
+                          type="file"
+                        />
+                      </div>
                     </div>
                     <!-- icons -->
                   </div>
@@ -427,7 +467,10 @@
             >
               Close
             </button>
-            <button type="button" class="btn btn-primary rounded-pill">
+            <button
+              type="button"
+              class="postButton btn btn-primary rounded-pill"
+            >
               Post
             </button>
           </div>

@@ -25,27 +25,35 @@ if (localStorage.getItem("accessToken")) {
 }
 
 async function register() {
+  const emailRegex = /^[a-zA-Z0-9._-]{6,}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   const email = document.getElementById("registerEmail").value;
   const name = document.getElementById("registerName").value;
   const username = document.getElementById("registerUsername").value;
   const password = document.getElementById("registerPassword").value;
 
-  const formData = new FormData();
-  formData.append("email", email);
-  formData.append("name", name);
-  formData.append("username", username);
-  formData.append("password", password);
+  console.log(typeof emailRegex.test(email));
+  if (emailRegex.test(email) == false) {
+    alert("invalid email");
+  } else {
+    // alert("false");
 
-  try {
-    let [res, response] = await create_user(formData);
-    if (res.status != 201) {
-      throw new Error(response.msg);
-    } else {
-      alert(response.msg);
-      window.location.replace("./landing.html");
+    const formData = new FormData();
+    formData.append("email", email);
+    formData.append("name", name);
+    formData.append("username", username);
+    formData.append("password", password);
+
+    try {
+      let [res, response] = await create_user(formData);
+      if (res.status != 201) {
+        throw new Error(response.msg);
+      } else {
+        alert(response.msg);
+        window.location.replace("./landing.html");
+      }
+    } catch (error) {
+      alert(error);
     }
-  } catch (error) {
-    alert(error);
   }
 }
 async function create_user(formData) {
@@ -207,6 +215,41 @@ async function unlikeTweet(id) {
   }
 }
 
+function timeCount(created_at) {
+  let now = new Date();
+  let createdAt = new Date(created_at);
+  let timeDifference = Math.abs(now - createdAt);
+
+  let seconds = Math.floor(timeDifference / 1000);
+  let minutes = Math.floor(seconds / 60);
+  let hours = Math.floor(minutes / 60);
+  let days = Math.floor(hours / 24);
+  let months = Math.floor(days / 30);
+
+  hours %= 24;
+  minutes %= 60;
+  seconds %= 60;
+
+  if (months > 0) {
+    if (months > 1) {
+      return months + " months ago";
+    }
+    return months + " month ago";
+  }
+  if (days > 0) {
+    return days + " days ago";
+  }
+  if (hours > 0) {
+    return hours + " hours ago";
+  }
+  if (minutes > 0) {
+    return minutes + " minutes ago";
+  }
+  if (seconds > 0) {
+    return seconds + " seconds ago";
+  }
+}
+
 async function followingTweet() {
   const response = await fetch("http://127.0.0.1:5000/tweet/following_tweets", {
     headers: {
@@ -227,9 +270,7 @@ followingTweet()
     tweets.forEach((t) => {
       let tweetAva = "http://127.0.0.1:5000/user/get_avatar/" + t.profile;
       let attachment = "http://127.0.0.1:5000/user/get_picture/" + t.attachment;
-      let now = new Date();
-      let time = now - new Date(t.created_at);
-      let date = Math.floor(new Date(time) / 1000 / 60 / 60 / 24) + " days ago";
+      let date = timeCount(t.created_at);
 
       container.innerHTML += `<div class="tweet">
             <div class="p-2 pe-4 pe-4 border boreder-dark border-top-0">
@@ -321,9 +362,7 @@ popularTweet().then((tweets) => {
   tweets.result.forEach((t) => {
     let tweetAva = "http://127.0.0.1:5000/user/get_avatar/" + t.img_url;
     let attachment = "http://127.0.0.1:5000/user/get_picture/" + t.attachment;
-    let now = new Date();
-    let time = now - new Date(t.created_at);
-    let date = Math.floor(new Date(time) / 1000 / 60 / 60 / 24) + " days ago";
+    let date = timeCount(t.created_at);
     container.innerHTML += `<div class="tweet">
             <div class="p-2 pe-4 pe-4 border boreder-dark border-top-0">
               <div class="d-flex">
@@ -451,8 +490,16 @@ popularUser().then(async (users) => {
         <div class="row">
           <div class="d-flex justify-content-between">
             <div class="d-flex" style="gap: 10px">
-              <span><b>${u.name}</b></span>
-              <span>${u.username}</span>
+            <a href="profile.html?userid=${
+              u.user_id
+            }" style="text-decoration: none; color: black"><span><b>${
+        u.name
+      }</b></span></a>
+            <a href="profile.html?userid=${
+              u.user_id
+            }" style="text-decoration: none; color: black"><span>${
+        u.username
+      }</span></a>
             </div>
           </div>
         </div>
