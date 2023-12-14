@@ -59,6 +59,28 @@ if (avatarName) {
   avatar.alt = data.name;
 }
 
+const postButton = document.getElementsByClassName("postButton");
+const postTweet = document.getElementById("postTweet");
+const postImg = document.getElementById("postImg");
+const modalPostImg = document.getElementById("modalPostImg");
+const modalPostTweet = document.getElementById("modalPostTweet");
+
+if (postButton.length > 0) {
+  Array.from(postButton).forEach((btn) => {
+    btn.addEventListener("click", async function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      let tweet = modalPostTweet.value;
+      let attachment = modalPostImg.files[0];
+      if (btn.id) {
+        tweet = postTweet.value;
+        attachment = postImg.files[0];
+      }
+      await newTweet(tweet, attachment);
+    });
+  });
+}
+
 async function getStatus() {
   let res = await fetch("http://127.0.0.1:5000/user/status", {
     headers: {

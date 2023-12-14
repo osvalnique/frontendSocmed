@@ -417,11 +417,12 @@ async function follow() {
 }
 follow();
 
-async function newTweet(tweet) {
+async function newTweet(tweet, attachment) {
   const formData = new FormData();
   formData.append("tweet", tweet);
+  formData.append("attachment", attachment);
 
-  let res = await fetch("http://127.0.0.1:5000/tweet/post", {
+  let res = await fetch("http://127.0.0.1:5000/tweet/post_pict", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${accessToken}`,
@@ -439,6 +440,8 @@ async function newTweet(tweet) {
 
 const postButton = document.getElementsByClassName("postButton");
 const postTweet = document.getElementById("postTweet");
+const postImg = document.getElementById("postImg");
+const modalPostImg = document.getElementById("modalPostImg");
 const modalPostTweet = document.getElementById("modalPostTweet");
 
 if (postButton.length > 0) {
@@ -447,10 +450,12 @@ if (postButton.length > 0) {
       e.preventDefault();
       e.stopPropagation();
       let tweet = modalPostTweet.value;
+      let attachment = modalPostImg.files[0];
       if (btn.id) {
         tweet = postTweet.value;
+        attachment = postImg.files[0];
       }
-      await newTweet(tweet);
+      await newTweet(tweet, attachment);
     });
   });
 }

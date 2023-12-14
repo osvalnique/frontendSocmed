@@ -153,12 +153,11 @@ async function newTweet(tweet, attachment) {
     body: formData,
   });
   let data = await res.json();
-  console.log("data", data);
   if (res.ok) {
     alert(data.msg);
     window.location.reload();
   } else {
-    return alert("hehehehe");
+    return alert(data.msg);
   }
 }
 
@@ -175,12 +174,10 @@ if (postButton.length > 0) {
       e.stopPropagation();
       let tweet = modalPostTweet.value;
       let attachment = modalPostImg.files[0];
-      // console.log(tweet);
       if (btn.id) {
         tweet = postTweet.value;
         attachment = postImg.files[0];
       }
-      // console.log(attachment);
       await newTweet(tweet, attachment);
     });
   });
